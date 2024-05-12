@@ -9,8 +9,13 @@
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                    <div class="p-6 text-gray-900 text-3xl font-bold text-center">
-                        {{ __('Approve Users') }}
+                    <div class="flex justify-between">
+                        <div class="p-6 text-gray-900 text-3xl font-bold text-left">
+                            {{ __('Approve Users') }}
+                        </div>
+                        <div class="p-6 text-gray-900 text-3xl font-bold text-right">
+                            <a href="{{ route('create-user.view') }}" class="rounded-xl bg-gray-600 text-white px-6 py-2 focus:outline-none focus-visible:ring-1 dark:hover:text-white">Add User</a>
+                        </div>
                     </div>
 
                     @if(session()->has('success'))
@@ -53,7 +58,7 @@
                                             <form method="POST" action="{{ route('profile.approve', ['user' => $user->id]) }}">
                                                 @csrf
                                                 @method('POST')
-                                                <button type="submit" class="px-6 py-2 bg-green-300 rounded-sm">Approve</button>
+                                                <button type="submit" class="px-6 py-2 bg-green-300 rounded-xl">Approve</button>
                                             </form>
                                         </td>
                                     </tr>
