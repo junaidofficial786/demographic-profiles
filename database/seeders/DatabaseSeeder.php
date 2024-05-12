@@ -15,21 +15,22 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        for ($i = 0; $i < 100; $i++) {
+        for ($i = 0; $i < 1000; $i++) {
+            $date = fake()->dateTimeBetween('-1 year', 'now');
             User::factory()->create([
                 'name' => fake()->name(),
                 'email' => fake()->email(),
                 'password' => bcrypt('password'),
                 'is_admin' => 0,
                 'approved' => 0,
-                'gender' => 'male',
-                'age' => 30,
+                'gender' => fake()->randomElement(['male', 'female']),
+                'age' => rand(10, 60),
                 'city' => 'Daska',
-                'province' => 'Punjab',
+                'province' => fake()->randomElement(['Punjab', 'Sindh', 'Gilgit-Baltistan', 'Balochistan', 'Khyber Pakhtunkhwa', 'Azad Kashmir']),
                 'employement_status' => "full_time",
                 'degree_level' => "master",
-                'created_at' => now(),
-                'updated_at' => now(),
+                'created_at' => $date,
+                'updated_at' => $date,
             ]);
         }
     }

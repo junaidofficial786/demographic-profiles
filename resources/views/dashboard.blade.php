@@ -77,15 +77,6 @@
             </div>
         </div>
     @else
-        @php
-            // pie-chart data
-            $labels = $pieChartData['provinces'];
-            $values = $pieChartData['user_counts'];
-
-            // Histogram data
-            $ageGroups = $histogramData['age_range'];
-            $userCounts = $histogramData['user_counts'];
-        @endphp
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
@@ -105,6 +96,13 @@
                             <p class="text-center">Users by age:</p>
                             <canvas id="ageHistogram" width="200" height="200"></canvas>
                         </div>
+                        <br>
+                        <br>
+                        <br>
+                        <div id="AreaChart">
+                            <p class="text-center">Users by Creation Date:</p>
+                            <canvas id="userCreationChart" width="400" height="200"></canvas>
+                        </div>
 
                     </div>
                 </div>
@@ -118,9 +116,9 @@
     var myPieChart = new Chart(ctx, {
         type: 'pie',
         data: {
-            labels: {!! json_encode($labels) !!},
+            labels: {!! json_encode($pieChartData['provinces']) !!},
             datasets: [{
-                data: {!! json_encode($values) !!},
+                data: {!! json_encode($pieChartData['user_counts']) !!},
                 backgroundColor: [
                     'rgba(255, 99, 132, 0.5)',
                     'rgba(54, 162, 235, 0.5)',
@@ -150,8 +148,8 @@
 
 <script>
     var ctx = document.getElementById('ageHistogram').getContext('2d');
-    var ages = {!! json_encode($ageGroups) !!}; // Assuming $ageGroups contains your age distribution data
-    var counts = {!! json_encode($userCounts) !!}; // Assuming $userCounts contains corresponding user counts
+    var ages = {!! json_encode($histogramData['age_range']) !!}; // Assuming $ageGroups contains your age distribution data
+    var counts = {!! json_encode($histogramData['user_counts']) !!}; // Assuming $userCounts contains corresponding user counts
 
     var ageHistogram = new Chart(ctx, {
         type: 'bar',
@@ -171,6 +169,42 @@
                     ticks: {
                         beginAtZero: true,
                         stepSize: 1
+                    }
+                }]
+            }
+        }
+    });
+</script>
+
+<script>
+    var ctx = document.getElementById('userCreationChart').getContext('2d');
+    var creationDates = {!! json_encode($areaChartData['creation_dates']) !!}; // Assuming $creationDates contains creation dates
+    var userCounts = {!! json_encode($areaChartData['user_counts']) !!}; // Assuming $userCounts contains corresponding user counts
+
+    var userCreationChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: creationDates,
+            datasets: [{
+                label: 'User Creation',
+                data: userCounts,
+                fill: true,
+                backgroundColor: 'rgba(54, 162, 235, 0.2)', // Adjust color and opacity as needed
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                xAxes: [{
+                    type: 'time',
+                    time: {
+                        unit: 'day' // Adjust time unit as needed
+                    }
+                }],
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
                     }
                 }]
             }
